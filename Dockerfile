@@ -8,8 +8,8 @@ MAINTAINER Mobile Builds Eng "mobile-builds-eng@uber.com"
 ENV LANG en_US.UTF-8
 RUN locale-gen $LANG
 
-ENV DOCKER_ANDROID_LANG en_US
-ENV DOCKER_ANDROID_DISPLAY_NAME mobileci-docker
+ENV DOCKER_ANDROID_LANG pt_BR
+ENV DOCKER_ANDROID_DISPLAY_NAME arduinominas-android-docker
 
 # Never ask for confirmations
 ENV DEBIAN_FRONTEND noninteractive
@@ -75,15 +75,20 @@ ENV ANDROID_COMPONENTS platform-tools,android-23,build-tools-23.0.2,build-tools-
 RUN echo y | /usr/local/android-sdk/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a
 
 # Install Android NDK
-RUN wget http://dl.google.com/android/repository/android-ndk-r12-linux-x86_64.zip
-RUN unzip android-ndk-r12-linux-x86_64.zip
-RUN mv android-ndk-r12 /usr/local/android-ndk
-RUN rm android-ndk-r12-linux-x86_64.zip
+RUN wget http://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip
+RUN unzip android-ndk-r15c-linux-x86_64.zip
+RUN mv android-ndk-r15c /usr/local/android-ndk
+RUN rm android-ndk-r15c-linux-x86_64.zip
+#RUN wget http://dl.google.com/android/repository/android-ndk-r16c-linux-x86_64.zip
+#RUN unzip android-ndk-r16c-linux-x86_64.zip
+#RUN mv android-ndk-r16c /usr/local/android-ndk-r16c
+#RUN rm android-ndk-r16c-linux-x86_64.zip
 
 # Environment variables
 ENV ANDROID_HOME /usr/local/android-sdk
 ENV ANDROID_SDK_HOME $ANDROID_HOME
 ENV ANDROID_NDK_HOME /usr/local/android-ndk
+ENV NDK_ROOT=${ANDROID_NDK_HOME}
 ENV JENKINS_HOME $HOME
 ENV PATH ${INFER_HOME}/bin:${PATH}
 ENV PATH $PATH:$ANDROID_SDK_HOME/tools
@@ -104,7 +109,7 @@ ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
 RUN apt-get clean
 
 # Add build user account, values are set to default below
-ENV RUN_USER mobileci
+ENV RUN_USER arduinominas
 ENV RUN_UID 5089
 
 RUN id $RUN_USER || adduser --uid "$RUN_UID" \
